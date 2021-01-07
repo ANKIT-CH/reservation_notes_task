@@ -68,6 +68,10 @@ class _AuthPageState extends State<AuthPage> {
       if (error.message != null) {
         message = error.message;
       }
+
+      ///
+      ///Snack bar in case any error occur
+      ///
       Scaffold.of(ctx).showSnackBar(
         SnackBar(
           content: Text(message),

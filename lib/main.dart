@@ -31,9 +31,17 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (ctx, userLoginSnapshot) {
+          ///
+          ///if user is already logedin then authentication is not needed everytime
+          ///
           if (userLoginSnapshot.hasData) {
             return ReservationsPage();
           }
+
+          ///
+          ///if authentication instnance shows not logged in then the authentication screen will be shown
+          ///
+
           return AuthPage();
         },
       ),

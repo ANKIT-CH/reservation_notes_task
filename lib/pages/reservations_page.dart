@@ -35,7 +35,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
             ),
             items: [
               ////
-              ///
+              ///this [DropDownMenuItem] will give Signout
               ///
               DropdownMenuItem(
                 child: Container(
@@ -53,7 +53,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
               ),
 
               ///
-              ///
+              ///this [DropDownMenuItem] will give Add new Resrevation option
               ///
               DropdownMenuItem(
                 child: Container(
@@ -77,8 +77,11 @@ class _ReservationsPageState extends State<ReservationsPage> {
                 ///
               }
               if (itemValue == 'AddNew') {
+                ///
+                ///Routed to edd new reservation screen
+                ///
                 Navigator.of(context)
-                    .pushReplacementNamed(NewReservation.routeName); /////
+                    .pushReplacementNamed(NewReservation.routeName);
               }
             },
           ),
@@ -91,7 +94,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Reservations(context), ////
+              child: Reservations(context),
             ),
           ],
         ),

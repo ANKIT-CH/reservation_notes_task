@@ -49,10 +49,13 @@ class _AuthFormState extends State<AuthForm> {
 
     if (isValid) {
       _formkey.currentState.save();
-      print(_userName);
-      print(_email);
-      print(_password);
+      // print(_userName);
+      // print(_email);
+      // print(_password);
 
+      ///
+      ///after checking validation the SubmitAuthForm function of parent class will be called
+      ///
       widget.submitInfo(
         _userName.trim(),
         _email.trim(),
@@ -77,7 +80,14 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  ///
+                  ///in case of signup user need to upload a profile picture
+                  ///
                   if (!_isLogin) UserImagePicker(_submitImage),
+
+                  ///
+                  ///in case of signup user need to pick a username
+                  ///
                   if (!_isLogin)
                     TextFormField(
                       key: ValueKey('username'),
@@ -145,6 +155,10 @@ class _AuthFormState extends State<AuthForm> {
                       ),
                       onPressed: _trySubmit,
                     ),
+
+                  ///
+                  ///switching between signup and login
+                  ///
                   if (!widget.isLoading)
                     FlatButton(
                       child: Text(_isLogin

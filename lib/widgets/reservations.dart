@@ -15,6 +15,10 @@ class Reservations extends StatelessWidget {
       await Firestore.instance.collection('reservations').document(id).delete();
     } catch (error) {
       print(error);
+
+      ///
+      ///[SnackBar] when any error occur
+      ///
       Scaffold.of(ctx).showSnackBar(SnackBar(
           content: Text('unble to delete this item'),
           backgroundColor: Theme.of(ctx).errorColor));
@@ -24,6 +28,9 @@ class Reservations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+      ///
+      ///user is signed or logged in then we will get the user id
+      ///
       future: FirebaseAuth.instance.currentUser(),
       builder: (ctx, futureSnapShot) {
         if (futureSnapShot.connectionState == ConnectionState.waiting) {
@@ -35,7 +42,9 @@ class Reservations extends StatelessWidget {
           stream: Firestore.instance
               .collection('reservations')
               .where('userId', isEqualTo: futureSnapShot.data.uid)
-              .orderBy('resTime', descending: false)
+              .orderBy('resTime',
+                  descending:
+                      false) //this will sort all the reservations by ReservationTime
               .snapshots(),
           builder: (ctx, snapShot) {
             if (snapShot.connectionState == ConnectionState.waiting) {
@@ -45,6 +54,7 @@ class Reservations extends StatelessWidget {
             }
 
             ///
+            ///if no document or reservation is present for current user
             ///
             if (snapShot.data.documents.length <= 0) {
               return Center(
@@ -58,17 +68,10 @@ class Reservations extends StatelessWidget {
               reverse: false,
               itemCount: snapShot.data.documents.length,
               itemBuilder: (ctx, index) {
-                // if (snapShot.data.documents[index]['userId'] ==
-                //     futureSnapShot.data.uid) return null;
-                // setState(() {
-                //   widget.sortByTime = !widget.sortByTime;
-                // });
                 return IndividualReservation(
                   snapShot.data.documents[index]['name'],
                   snapShot.data.documents[index]['phNumber'],
                   snapShot.data.documents[index]['email'],
-                  // snapShot.data.documents[index]['resTime']
-                  //     .toDate()
                   DateFormat('kk:mm')
                       .format(
                           snapShot.data.documents[index]['resTime'].toDate())

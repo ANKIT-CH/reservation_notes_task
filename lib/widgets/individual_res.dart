@@ -48,8 +48,6 @@ class IndividualReservation extends StatelessWidget {
             children: [
               Text(
                 'Name:- $name',
-                // DateTime.parse(createdTime).toString(),
-                // .toDate().toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -67,8 +65,6 @@ class IndividualReservation extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => (NewReservation(true, docId))));
-                  // NewNotes(true, docId);
-                  // print(' hello        ');
                 },
                 icon: Icon(
                   Icons.edit,
@@ -86,23 +82,18 @@ class IndividualReservation extends StatelessWidget {
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
                 ),
-                // textAlign: isMe ? TextAlign.end : TextAlign.start,
               ),
             ],
           ),
           Divider(thickness: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            // mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 'Email:-  $email',
-                // DateTime.parse(createdTime).toString(),
-                // .toDate().toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.blue,
-                  // fontWeight: FontWeight.bold,
                 ),
               ),
             ],
@@ -110,12 +101,9 @@ class IndividualReservation extends StatelessWidget {
           Divider(thickness: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            // mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 'Time:-  $resTime     Date:  $resDate',
-                // DateTime.parse(createdTime).toString(),
-                // .toDate().toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.blue,

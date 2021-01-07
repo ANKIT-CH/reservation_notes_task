@@ -31,6 +31,9 @@ class _NewReservationState extends State<NewReservation> {
   var dateController = new TextEditingController(
       text: '${DateFormat('yyyy-MM-dd').format(DateTime.now())}');
 
+  ///
+  ///Function to pick date from calender
+  ///
   void _presentDate() {
     showDatePicker(
       context: context,
@@ -90,6 +93,8 @@ class _NewReservationState extends State<NewReservation> {
                 },
               );
       } catch (error) {
+        //in case if we want to show a snackbar ion occurence of any error
+        //
         // Scaffold.of(context).showSnackBar(
         //   SnackBar(
         //     content: Text('an error occured:- error'),
@@ -101,13 +106,21 @@ class _NewReservationState extends State<NewReservation> {
       // setState(() {
       //   _isLoading = false;
       // });
+      //
+
+      //when we have filled the data and uploaded it to database or
+      // any error occured then we will navigate to all reservations page
+      //
       Navigator.of(context).pushReplacement(
           (MaterialPageRoute(builder: (_) => ReservationsPage())));
-      //  Navigator.of(context).pop();
     }
   }
 
   void init() async {
+    ///
+    ///when we have to edit the given document then
+    /// first we need to provide initial value to every [TextFormField]
+    ///
     if (widget.isEdit) {
       try {
         // await Firestore.instance  .collection('notes').where(FieldPath.documentId, isEqualTo: 'docId')  .getDocuments() .then( (value) { if (value.documents.isNotEmpty) {Map<String, dynamic> docData = value.documents.single.data;print(docData['name']);}}, );
@@ -129,7 +142,9 @@ class _NewReservationState extends State<NewReservation> {
           initstate = false;
         });
       } catch (error) {
-        // print(error);
+        print(error);
+        //in case if we want to show a snackbar ion occurence of any error
+        //
         // Scaffold.of(context).showSnackBar(SnackBar(
         //     content: Text('an error occured'),
         //     backgroundColor: Theme.of(context).errorColor));
@@ -137,6 +152,7 @@ class _NewReservationState extends State<NewReservation> {
     }
   }
 
+//to dispose all the controllers
   @override
   void dispose() {
     nameController.dispose();
@@ -166,6 +182,9 @@ class _NewReservationState extends State<NewReservation> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    ///
+                    ///[TextFormField] for Name
+                    ///
                     TextFormField(
                       controller: nameController,
                       keyboardType: TextInputType.text,
@@ -189,6 +208,10 @@ class _NewReservationState extends State<NewReservation> {
                         nameController.text = value;
                       },
                     ),
+
+                    ///
+                    ///[TextFormField] for Phone Number
+                    ///
                     TextFormField(
                       controller: phNumberController,
                       keyboardType: TextInputType.number,
@@ -209,6 +232,10 @@ class _NewReservationState extends State<NewReservation> {
                         phNumberController.text = value;
                       },
                     ),
+
+                    ///
+                    ///[TextFormField] for Email
+                    ///
                     TextFormField(
                       controller: emailController,
                       key: ValueKey('email'),
@@ -229,6 +256,10 @@ class _NewReservationState extends State<NewReservation> {
                         emailController.text = value;
                       },
                     ),
+
+                    ///
+                    ///[TextFormField] for Reservation Time
+                    ///
                     TextFormField(
                       controller: timeController,
                       keyboardType: TextInputType.datetime,
@@ -258,6 +289,10 @@ class _NewReservationState extends State<NewReservation> {
                       },
                     ),
                     SizedBox(height: 10),
+
+                    ///
+                    ///we can also use [InputDatePickerFormField] to pick date
+                    ///
                     //  InputDatePickerFormField(
                     // firstDate: DateTime.now(), lastDate: DateTime.now()),
                     Row(

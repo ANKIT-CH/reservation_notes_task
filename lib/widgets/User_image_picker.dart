@@ -17,6 +17,10 @@ class _UserImagePickerState extends State<UserImagePicker> {
   File _pickedImage;
   void _pickImage(bool isCamera) async {
     final pickedImageFile = await ImagePicker().getImage(
+      ///
+      ///on the basis choice of the user by tapping corresponding button(camera or gallery)
+      ///the sourse of image will be chosen
+      ///
       source: isCamera ? ImageSource.camera : ImageSource.gallery,
       imageQuality: 100,
       maxWidth: 150,
