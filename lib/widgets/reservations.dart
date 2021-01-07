@@ -12,7 +12,7 @@ class Reservations extends StatelessWidget {
 
   void _deleteNote(String id) async {
     try {
-      await Firestore.instance.collection('notes').document(id).delete();
+      await Firestore.instance.collection('reservations').document(id).delete();
     } catch (error) {
       print(error);
       Scaffold.of(ctx).showSnackBar(SnackBar(
