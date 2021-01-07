@@ -1,4 +1,4 @@
-import 'package:chat_app/widgets/new_res.dart';
+// import 'package:chat_app/widgets/new_res.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,33 +6,20 @@ import 'package:intl/intl.dart';
 
 import 'individual_res.dart';
 
-// class Notes extends StatefulWidget {
-//   bool sortByTime;
-//   Notes(this.sortByTime);
-
-//   @override
-//   _NotesState createState() => _NotesState();
-// }
-
 class Reservations extends StatelessWidget {
-  // bool sortByTime;
-  // Notes(this.sortByTime);
+  var ctx;
+  Reservations(this.ctx);
 
   void _deleteNote(String id) async {
     try {
       await Firestore.instance.collection('notes').document(id).delete();
     } catch (error) {
-      // print(error);
+      print(error);
+      Scaffold.of(ctx).showSnackBar(SnackBar(
+          content: Text('unble to delete this item'),
+          backgroundColor: Theme.of(ctx).errorColor));
     }
   }
-
-  // void _editNote(String id) async {
-  //   try {
-  //     NewNotes(true, id);
-  //   } catch (error) {
-  //     // print(error);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +46,12 @@ class Reservations extends StatelessWidget {
 
             ///
             ///
-            ///
             if (snapShot.data.documents.length <= 0) {
               return Center(
                 child: Text('no data available'),
               );
             }
 
-            ///
             ///
             ///
             return ListView.builder(

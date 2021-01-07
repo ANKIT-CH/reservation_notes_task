@@ -28,42 +28,15 @@ class _ReservationsPageState extends State<ReservationsPage> {
       appBar: AppBar(
         title: Text('Your Reservations'),
         actions: [
-          // Container(
-          //   child: IconButton(
-          //     icon: Icon(
-          //       Icons.add,
-          //     ),
-          //     color: Theme.of(context).primaryIconTheme.color,
-          //     onPressed: () {
-          //       Navigator.of(context).pushNamed(NewNotes.routeName);
-          //     },
-          //   ),
-          // ),
-          // Container(
-          // child: Row(
-          // mainAxisSize: MainAxisSize.min,
-          // children: [
-          //   Switch(
-          //     value: _sortByTime,
-          //     onChanged: (val) {
-          //       setState(() {
-          //         _sortByTime = val;
-          //       });
-          //     },
-          //   ),
-          // SizedBox(
-          //   width: 5,
-          // ),
-          // Text('Sort'),
-          // ],
-          // ),
-          // ),
           DropdownButton(
             icon: Icon(
               Icons.menu,
               color: Theme.of(context).primaryIconTheme.color,
             ),
             items: [
+              ////
+              ///
+              ///
               DropdownMenuItem(
                 child: Container(
                   child: Row(
@@ -78,6 +51,10 @@ class _ReservationsPageState extends State<ReservationsPage> {
                 ),
                 value: 'Signout',
               ),
+
+              ///
+              ///
+              ///
               DropdownMenuItem(
                 child: Container(
                   child: Row(
@@ -96,12 +73,12 @@ class _ReservationsPageState extends State<ReservationsPage> {
             onChanged: (itemValue) {
               if (itemValue == 'Signout') {
                 FirebaseAuth.instance.signOut();
+
+                ///
               }
               if (itemValue == 'AddNew') {
-                // Navigator.of(context)
-                //     .pushNamed(NewNotes.routeName, arguments: {false, ''});
                 Navigator.of(context)
-                    .pushReplacementNamed(NewReservation.routeName);
+                    .pushReplacementNamed(NewReservation.routeName); /////
               }
             },
           ),
@@ -114,8 +91,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
         child: Column(
           children: <Widget>[
             Expanded(
-              // child: Notes(_sortByTime),
-              child: Reservations(),
+              child: Reservations(context), ////
             ),
           ],
         ),

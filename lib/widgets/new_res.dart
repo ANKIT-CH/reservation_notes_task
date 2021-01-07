@@ -123,6 +123,9 @@ class _NewReservationState extends State<NewReservation> {
             DateFormat('kk:mm').format(doc.data['resTime'].toDate()).toString();
       } catch (error) {
         print(error);
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text('an error occured'),
+            backgroundColor: Theme.of(context).errorColor));
       }
     }
     setState(() {});
@@ -131,14 +134,6 @@ class _NewReservationState extends State<NewReservation> {
   @override
   Widget build(BuildContext context) {
     init();
-    //  _name = doc['name'];
-    //       _phNumber = doc['phNumber'];
-    //       _email = doc['email'];
-    //       _date = DateFormat('dd-MM-yyyy')
-    //           .format(doc['retTime'].toDate())
-    //           .toString();
-    //       _time =
-    //           DateFormat('kk:mm').format(doc['retTime'].toDate()).toString();
 
     return Scaffold(
       appBar: AppBar(
