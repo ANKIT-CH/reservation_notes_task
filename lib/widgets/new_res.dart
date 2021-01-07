@@ -9,8 +9,8 @@ import '../pages/reservations_page.dart';
 
 class NewReservation extends StatefulWidget {
   static const routeName = '/new_res';
-  bool isEdit;
-  String docId;
+  final bool isEdit;
+  final String docId;
   NewReservation([this.isEdit = false, this.docId = '']);
 
   // final Function _revert;
@@ -22,13 +22,14 @@ class NewReservation extends StatefulWidget {
 class _NewReservationState extends State<NewReservation> {
   final _formkey = GlobalKey<FormState>();
   bool initstate = true;
-  bool _isLoading = false;
+  // bool _isLoaded = false;
 
-  var _name = '';
-  var _phNumber = '';
-  var _email = '';
-  var _time = '';
-  String _date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  var nameController = new TextEditingController();
+  var phNumberController = new TextEditingController();
+  var emailController = new TextEditingController();
+  var timeController = new TextEditingController();
+  var dateController = new TextEditingController(
+      text: '${DateFormat('yyyy-MM-dd').format(DateTime.now())}');
 
   void _presentDate() {
     showDatePicker(
@@ -36,12 +37,16 @@ class _NewReservationState extends State<NewReservation> {
       initialDate:
           // widget.isEdit ?  :
           DateTime.now(),
-      firstDate: DateTime(2018, 1, 1),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2200, 1, 1),
     ).then((value) {
-      if (value == null) return;
+      if (value == null) {
+        print('problem');
+        return;
+      }
+
       setState(() {
-        _date = DateFormat('yyyy-MM-dd').format(value);
+        dateController.text = DateFormat('yyyy-MM-dd').format(value);
       });
     });
   }
@@ -53,17 +58,14 @@ class _NewReservationState extends State<NewReservation> {
     if (isValid) {
       _formkey.currentState.save();
 
-      var ttime = _date + ' ' + _time + ':00';
+      var ttime = dateController.text + ' ' + timeController.text + ':00';
 
-      print(_name);
-      print(_phNumber);
-      print(_email);
+      print(nameController.text);
+      print(phNumberController.text);
+      print(emailController.text);
       print(ttime);
 
       try {
-        setState(() {
-          _isLoading = true;
-        });
         final user = await FirebaseAuth.instance.currentUser();
         widget.isEdit
             ? Firestore.instance
@@ -71,18 +73,18 @@ class _NewReservationState extends State<NewReservation> {
                 .document(widget.docId)
                 .updateData(
                 {
-                  'name': _name.trim(),
-                  'phNumber': _phNumber.trim(),
-                  'email': _email.trim(),
+                  'name': nameController.text.trim(),
+                  'phNumber': phNumberController.text.trim(),
+                  'email': emailController.text.trim(),
                   'resTime': Timestamp.fromDate(DateTime.parse(ttime)),
                   'userId': user.uid,
                 },
               )
             : Firestore.instance.collection('reservations').add(
                 {
-                  'name': _name.trim(),
-                  'phNumber': _phNumber.trim(),
-                  'email': _email.trim(),
+                  'name': nameController.text.trim(),
+                  'phNumber': phNumberController.text.trim(),
+                  'email': emailController.text.trim(),
                   'resTime': Timestamp.fromDate(DateTime.parse(ttime)),
                   'userId': user.uid,
                 },
@@ -96,12 +98,13 @@ class _NewReservationState extends State<NewReservation> {
         print(error);
       }
 
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
+      Navigator.of(context).pushReplacement(
+          (MaterialPageRoute(builder: (_) => ReservationsPage())));
+      //  Navigator.of(context).pop();
     }
-    Navigator.of(context).pushReplacement(
-        (MaterialPageRoute(builder: (_) => ReservationsPage())));
   }
 
   void init() async {
@@ -113,27 +116,40 @@ class _NewReservationState extends State<NewReservation> {
             .document(widget.docId)
             .get();
 
-        _name = doc.data['name'];
-        _phNumber = doc.data['phNumber'];
-        _email = doc.data['email'];
-        _date = DateFormat('dd-MM-yyyy')
+        nameController.text = doc.data['name'];
+        phNumberController.text = doc.data['phNumber'];
+        emailController.text = doc.data['email'];
+        dateController.text = DateFormat('yyyy-MM-dd')
             .format(doc.data['resTime'].toDate())
             .toString();
-        _time =
+        timeController.text =
             DateFormat('kk:mm').format(doc.data['resTime'].toDate()).toString();
+        print(nameController.text);
+        setState(() {
+          initstate = false;
+        });
       } catch (error) {
-        print(error);
-        Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text('an error occured'),
-            backgroundColor: Theme.of(context).errorColor));
+        // print(error);
+        // Scaffold.of(context).showSnackBar(SnackBar(
+        //     content: Text('an error occured'),
+        //     backgroundColor: Theme.of(context).errorColor));
       }
     }
-    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phNumberController.dispose();
+    emailController.dispose();
+    timeController.dispose();
+    dateController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    init();
+    if (initstate) init();
 
     return Scaffold(
       appBar: AppBar(
@@ -151,7 +167,8 @@ class _NewReservationState extends State<NewReservation> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     TextFormField(
-                      // keyboardType: TextInputType.text,
+                      controller: nameController,
+                      keyboardType: TextInputType.text,
                       key: ValueKey('Name'),
                       validator: (value) {
                         if (value.isEmpty) {
@@ -163,17 +180,18 @@ class _NewReservationState extends State<NewReservation> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        labelText: widget.isEdit ? '$_name' : 'Name',
+                        labelText: 'Name',
                         labelStyle: TextStyle(
                           color: Colors.black,
                         ),
                       ),
                       onSaved: (value) {
-                        _name = value;
+                        nameController.text = value;
                       },
                     ),
                     TextFormField(
-                      // keyboardType: TextInputType.text,
+                      controller: phNumberController,
+                      keyboardType: TextInputType.number,
                       key: ValueKey('phNumber'),
                       validator: (value) {
                         if (value.isEmpty || value.length != 10) {
@@ -182,18 +200,17 @@ class _NewReservationState extends State<NewReservation> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        labelText:
-                            widget.isEdit ? '$_phNumber' : 'phone number',
+                        labelText: 'phone number(max length 10)',
                         labelStyle: TextStyle(
                           color: Colors.black,
                         ),
                       ),
-                      obscureText: true,
                       onSaved: (value) {
-                        _phNumber = value;
+                        phNumberController.text = value;
                       },
                     ),
                     TextFormField(
+                      controller: emailController,
                       key: ValueKey('email'),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
@@ -203,42 +220,51 @@ class _NewReservationState extends State<NewReservation> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        labelText: widget.isEdit ? '$_email' : 'email address',
+                        labelText: 'email address',
                         labelStyle: TextStyle(
                           color: Colors.black,
                         ),
                       ),
                       onSaved: (value) {
-                        _email = value;
+                        emailController.text = value;
                       },
                     ),
                     TextFormField(
+                      controller: timeController,
                       keyboardType: TextInputType.datetime,
                       key: ValueKey('Time'),
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'enter Time';
                         }
+                        if (value.length > 5 ||
+                            value[2] != ':' ||
+                            double.parse(value[0] + value[1]) > 24 ||
+                            (double.parse(value[0] + value[1]) == 24 &&
+                                double.parse(value[3] + value[4]) > 0) ||
+                            double.parse(value[3] + value[4]) > 59) {
+                          return 'enter valid Time format';
+                        }
                         return null;
                       },
                       decoration: InputDecoration(
-                        labelText:
-                            widget.isEdit ? '$_time' : 'Time (eg. hh:mm)',
+                        labelText: 'Time (eg. format hh:mm)',
                         labelStyle: TextStyle(
                           color: Colors.black,
                         ),
                       ),
                       onSaved: (value) {
-                        _time = value;
+                        timeController.text = value;
                       },
                     ),
-
                     SizedBox(height: 10),
+                    //  InputDatePickerFormField(
+                    // firstDate: DateTime.now(), lastDate: DateTime.now()),
                     Row(
                       children: <Widget>[
                         Expanded(
                           child: Text(
-                            'picked date: $_date',
+                            'picked date: ${dateController.text}',
                           ),
                         ),
                         FlatButton(
@@ -251,15 +277,15 @@ class _NewReservationState extends State<NewReservation> {
                         ),
                       ],
                     ),
-                    // if (isLoading) CircularProgressIndicator(),
-                    // if (!isLoading)
                     RaisedButton(
-                      child: _isLoading
-                          ? CircularProgressIndicator()
-                          : Text(
-                              'submit',
-                            ),
-                      onPressed: _isLoading ? null : _trySubmit,
+                      child:
+                          //  _isLoading  ? CircularProgressIndicator() :
+                          Text(
+                        'submit',
+                      ),
+                      onPressed:
+                          //  _isLoading ? null :
+                          _trySubmit,
                     ),
                   ],
                 ),

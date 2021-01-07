@@ -30,10 +30,7 @@ class MyApp extends StatelessWidget {
       },
       home: StreamBuilder(
         stream: FirebaseAuth.instance.onAuthStateChanged,
-        builder: (ctx, userLoginSnapshot)
-            //  =>
-            //     userLoginSnapshot.hasData ? ChatPage() : AuthPage(),
-            {
+        builder: (ctx, userLoginSnapshot) {
           if (userLoginSnapshot.hasData) {
             return ReservationsPage();
           }

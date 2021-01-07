@@ -33,7 +33,7 @@ class Reservations extends StatelessWidget {
         }
         return StreamBuilder(
           stream: Firestore.instance
-              .collection('notes')
+              .collection('reservations')
               .where('userId', isEqualTo: futureSnapShot.data.uid)
               .orderBy('resTime', descending: false)
               .snapshots(),
