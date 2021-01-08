@@ -44,7 +44,6 @@ class _NewReservationState extends State<NewReservation> {
       lastDate: DateTime(2200, 1, 1),
     ).then((value) {
       if (value == null) {
-        print('problem');
         return;
       }
 
@@ -63,10 +62,10 @@ class _NewReservationState extends State<NewReservation> {
 
       var ttime = dateController.text + ' ' + timeController.text + ':00';
 
-      print(nameController.text);
-      print(phNumberController.text);
-      print(emailController.text);
-      print(ttime);
+      // print(nameController.text);
+      // print(phNumberController.text);
+      // print(emailController.text);
+      // print(ttime);
 
       try {
         final user = await FirebaseAuth.instance.currentUser();
@@ -111,8 +110,9 @@ class _NewReservationState extends State<NewReservation> {
       //when we have filled the data and uploaded it to database or
       // any error occured then we will navigate to all reservations page
       //
-      Navigator.of(context).pushReplacement(
-          (MaterialPageRoute(builder: (_) => ReservationsPage())));
+      // Navigator.of(context).pushReplacement(
+      // (MaterialPageRoute(builder: (_) => ReservationsPage())));
+      Navigator.of(context).pop();
     }
   }
 
@@ -142,13 +142,16 @@ class _NewReservationState extends State<NewReservation> {
           initstate = false;
         });
       } catch (error) {
-        print(error);
+        // print(error);
         //in case if we want to show a snackbar ion occurence of any error
         //
         // Scaffold.of(context).showSnackBar(SnackBar(
         //     content: Text('an error occured'),
         //     backgroundColor: Theme.of(context).errorColor));
       }
+      setState(() {
+        initstate = false;
+      });
     }
   }
 

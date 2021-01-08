@@ -82,7 +82,7 @@ class _AuthPageState extends State<AuthPage> {
         _isLoading = false;
       });
     } catch (error) {
-      print(error.message);
+      // print(error.message);
 
       setState(() {
         _isLoading = false;

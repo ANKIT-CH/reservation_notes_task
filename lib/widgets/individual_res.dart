@@ -63,7 +63,9 @@ class IndividualReservation extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  // builder: (context) => (NewReservation(true, docId))));
+                  Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => (NewReservation(true, docId))));
                 },
                 icon: Icon(

@@ -80,8 +80,11 @@ class _ReservationsPageState extends State<ReservationsPage> {
                 ///
                 ///Routed to edd new reservation screen
                 ///
-                Navigator.of(context)
-                    .pushReplacementNamed(NewReservation.routeName);
+                // Navigator.of(context)
+                // .pushReplacementNamed(NewReservation.routeName);
+                Navigator.of(context).pushNamed(NewReservation.routeName);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (context) => (NewReservation())));
               }
             },
           ),
